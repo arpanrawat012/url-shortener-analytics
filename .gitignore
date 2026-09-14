@@ -1,0 +1,22 @@
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+!example.tfvars
+.terraform.lock.hcl
+
+# Java / Maven
+target/
+*.class
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.settings/
+.classpath
+.project
+.idea/
+*.iml
