@@ -37,6 +37,12 @@ public class CreateUrlHandler implements RequestHandler<APIGatewayV2HTTPEvent, A
                 return respond(200, "");
             }
 
+            String userId = event.getRequestContext()
+                    .getAuthorizer()
+                    .getJwt()
+                    .getClaims()
+                    .get("sub");
+
             Map<String, String> body = mapper.readValue(event.getBody(), Map.class);
             String longUrl = body.get("longUrl");
 
@@ -49,6 +55,7 @@ public class CreateUrlHandler implements RequestHandler<APIGatewayV2HTTPEvent, A
             Map<String, AttributeValue> item = new HashMap<>();
             item.put("short_code", AttributeValue.builder().s(shortCode).build());
             item.put("long_url", AttributeValue.builder().s(longUrl).build());
+            item.put("owner_id", AttributeValue.builder().s(userId).build());
             item.put("created_at", AttributeValue.builder().s(Instant.now().toString()).build());
 
             dynamoDb.putItem(PutItemRequest.builder()

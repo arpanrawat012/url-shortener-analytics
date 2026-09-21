@@ -23,9 +23,11 @@ resource "aws_apigatewayv2_integration" "create_url" {
 }
 
 resource "aws_apigatewayv2_route" "create_url" {
-  api_id    = aws_apigatewayv2_api.main.id
-  route_key = "POST /urls"
-  target    = "integrations/${aws_apigatewayv2_integration.create_url.id}"
+  api_id             = aws_apigatewayv2_api.main.id
+  route_key          = "POST /urls"
+  target             = "integrations/${aws_apigatewayv2_integration.create_url.id}"
+  authorization_type = "JWT"
+  authorizer_id      = aws_apigatewayv2_authorizer.cognito.id
 }
 
 resource "aws_lambda_permission" "allow_apigw_create_url" {
