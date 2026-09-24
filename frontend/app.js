@@ -222,11 +222,16 @@ async function loadUrls() {
 
       li.innerHTML = `
         <div class="url-row">
-          <div>
+          <div class="url-info">
             <a href="${shortLink}" target="_blank" class="url-short">${shortLink}</a>
             <span class="url-long">${url.longUrl}</span>
           </div>
-          <button class="view-analytics-btn" data-code="${url.shortCode}">📊 Stats</button>
+          <div class="url-actions">
+            <button class="icon-btn copy-btn" data-link="${shortLink}" title="Copy link">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="5.5" y="5.5" width="8.5" height="8.5" rx="1.5"/><path d="M10.5 5.5V3.5A1.5 1.5 0 0 0 9 2H3.5A1.5 1.5 0 0 0 2 3.5V9a1.5 1.5 0 0 0 1.5 1.5h2"/></svg>
+            </button>
+            <button class="view-analytics-btn" data-code="${url.shortCode}">Stats</button>
+          </div>
         </div>
       `;
       listEl.appendChild(li);
@@ -234,6 +239,23 @@ async function loadUrls() {
 
     document.querySelectorAll(".view-analytics-btn").forEach((btn) => {
       btn.addEventListener("click", () => openAnalytics(btn.dataset.code));
+    });
+
+    document.querySelectorAll(".copy-btn").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(btn.dataset.link);
+          const original = btn.innerHTML;
+          btn.classList.add("copied");
+          btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7"/></svg>`;
+          setTimeout(() => {
+            btn.classList.remove("copied");
+            btn.innerHTML = original;
+          }, 1200);
+        } catch {
+          /* clipboard unavailable — silently ignore */
+        }
+      });
     });
   } catch (err) {
     listEl.innerHTML = `<li class="empty">Failed to load links: ${err.message}</li>`;

@@ -4,14 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ShortLink — URL Shortener & Analytics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 </head>
 <body>
 
   <div class="container">
-    <h1>🔗 ShortLink</h1>
-    <p class="subtitle">Serverless URL shortener with real-time click analytics</p>
+    <header class="brand">
+      <span class="brand-mark">Short<em>Link</em></span>
+      <p class="subtitle">Shorten your links. See who's clicking, and when.</p>
+    </header>
 
     <!-- Auth section -->
     <div id="auth-section">
@@ -55,14 +60,16 @@
       </form>
 
       <ul id="urls-list" class="urls-list">
-        <li class="loading">Loading your links...</li>
+        <li class="loading">Loading your links…</li>
       </ul>
     </div>
 
     <!-- Analytics modal -->
     <div id="analytics-modal" class="modal hidden">
       <div class="modal-content">
-        <button id="close-modal" class="close-btn">✕</button>
+        <button id="close-modal" class="close-btn" aria-label="Close">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l12 12M14 2L2 14"/></svg>
+        </button>
         <h2 id="analytics-title"></h2>
         <p id="analytics-total"></p>
         <canvas id="clicks-chart"></canvas>
