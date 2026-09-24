@@ -1,0 +1,57 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Build create-url-function
+        run: mvn -f backend/create-url-function/pom.xml clean package
+
+      - name: Build redirect-function
+        run: mvn -f backend/redirect-function/pom.xml clean package
+
+      - name: Build list-urls-function
+        run: mvn -f backend/list-urls-function/pom.xml clean package
+
+      - name: Build analytics-function
+        run: mvn -f backend/analytics-function/pom.xml clean package
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform init
+        working-directory: terraform
+        run: terraform init
+
+      - name: Terraform apply
+        working-directory: terraform
+        run: terraform apply -auto-approve
+
+      - name: Get frontend bucket name
+        id: frontend_bucket
+        working-directory: terraform
+        run: echo "bucket=$(terraform output -raw frontend_website_url | cut -d'.' -f1)" >> $GITHUB_OUTPUT
+
+      - name: Sync frontend to S3
+        run: aws s3 sync frontend/ s3://${{ steps.frontend_bucket.outputs.bucket }} --delete
