@@ -223,8 +223,14 @@ async function loadUrls() {
       li.innerHTML = `
         <div class="url-row">
           <div class="url-info">
-            <a href="${shortLink}" target="_blank" class="url-short">${shortLink}</a>
-            <span class="url-long">${url.longUrl}</span>
+            <div class="url-field">
+              <span class="url-tag">Short link</span>
+              <a href="${shortLink}" target="_blank" class="url-short" title="${shortLink}">${shortLink}</a>
+            </div>
+            <div class="url-field">
+              <span class="url-tag">Goes to</span>
+              <span class="url-long" title="${url.longUrl}">${url.longUrl}</span>
+            </div>
           </div>
           <div class="url-actions">
             <button class="icon-btn copy-btn" data-link="${shortLink}" title="Copy link">

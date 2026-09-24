@@ -258,26 +258,54 @@ a:focus-visible {
 
 .url-info {
   min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.url-field {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.url-tag {
+  flex-shrink: 0;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+  width: 4.2rem;
+}
+
+.url-short,
+.url-long {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .url-short {
-  color: var(--ink);
+  color: var(--accent);
   font-weight: 600;
+  font-size: 0.9rem;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
   text-decoration: none;
 }
 
 .url-short:hover {
-  color: var(--accent);
+  color: var(--accent-hover);
+  text-decoration: underline;
 }
 
 .url-long {
-  color: var(--ink-faint);
-  font-size: 0.8rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
   display: block;
-  margin-top: 0.15rem;
 }
 
 .url-actions {
